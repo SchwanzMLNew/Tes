@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Support Admin - Schwans ML</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #f4f7fc 0%, #eef2f8 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.25s ease;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(145deg, #121826 0%, #0f141f 100%);
+    }
+
+    /* Header */
+    .site-header {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark-mode .site-header {
+      background: rgba(18, 24, 32, 0.96);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .header-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #1e2f4b, #2c3e66, #1b4a6e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .brand-name:hover {
+      opacity: 0.8;
+    }
+
+    body.dark-mode .brand-name {
+      background: linear-gradient(125deg, #b9d0f0, #8ab3e6, #6c9fd1);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .right-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      color: #1f2e45;
+      background: rgba(0, 0, 0, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-btn:hover {
+      background: rgba(0, 0, 0, 0.08);
+      transform: scale(0.96);
+    }
+
+    body.dark-mode .icon-btn {
+      color: #cfdef5;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    /* Support Card */
+    .support-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      border-radius: 2rem;
+      padding: 2.5rem;
+      max-width: 550px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    body.dark-mode .support-card {
+      background: rgba(25, 32, 45, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Logo */
+    .support-logo-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .support-logo {
+      width: 130px;
+      height: 130px;
+      object-fit: contain;
+      border-radius: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .support-logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* Title & Text */
+    .support-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #1e2f4b, #2c3e66);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.75rem;
+    }
+
+    body.dark-mode .support-title {
+      background: linear-gradient(125deg, #c9ddf5, #9abae0);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .support-text {
+      color: #6c7a91;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    body.dark-mode .support-text {
+      color: #9aa9c1;
+    }
+
+    .support-quote {
+      background: rgba(59, 113, 202, 0.08);
+      border-left: 3px solid #3b71ca;
+      padding: 0.8rem 1rem;
+      margin: 1.2rem 0;
+      border-radius: 0.75rem;
+      font-size: 0.85rem;
+      color: #4a5a7a;
+      text-align: left;
+    }
+
+    body.dark-mode .support-quote {
+      background: rgba(59, 113, 202, 0.12);
+      color: #b8c7e7;
+    }
+
+    /* Donation Button */
+    .donation-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #3b71ca, #1e3a8a);
+      color: white;
+      padding: 0.9rem 2rem;
+      border-radius: 60px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.25s ease;
+      margin: 1rem 0 1.2rem;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      max-width: 280px;
+      box-shadow: 0 4px 12px rgba(59, 113, 202, 0.25);
+    }
+
+    .donation-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(59, 113, 202, 0.4);
+      background: linear-gradient(135deg, #4a80d6, #2a4a9e);
+    }
+
+    .donation-link i {
+      font-size: 1.1rem;
+    }
+
+    /* Alternative Payment Info */
+    .payment-info {
+      margin: 1.2rem 0;
+      padding: 0.8rem;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      color: #8a9ab0;
+    }
+
+    body.dark-mode .payment-info {
+      background: rgba(255, 255, 255, 0.05);
+      color: #7a8aa5;
+    }
+
+    .payment-info i {
+      margin-right: 6px;
+      color: #3b71ca;
+    }
+
+    /* Back Button */
+    .back-button {
+      background: transparent;
+      border: 1px solid #b9c8e5;
+      border-radius: 40px;
+      padding: 0.6rem 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #2c3e66;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+      margin-top: 0.5rem;
+    }
+
+    .back-button:hover {
+      background: #3b71ca10;
+      border-color: #3b71ca;
+      transform: translateY(-2px);
+    }
+
+    body.dark-mode .back-button {
+      border-color: #4b5a7a;
+      color: #ccdeff;
+    }
+
+    body.dark-mode .back-button:hover {
+      background: #2d3a5e;
+      border-color: #7c9bdf;
+    }
+
+    /* Footer Note */
+    .footer-note {
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      color: #8f9eb2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    body.dark-mode .footer-note {
+      color: #6a7a95;
+    }
+
+    .footer-heart {
+      color: #e53e3e;
+      animation: heartbeat 1.5s ease infinite;
+      display: inline-block;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* Theme Toggle di Support Page */
+    .theme-toggle-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 26px;
+    }
+
+    .logo-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider-logo {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cbd5e1;
+      transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border-radius: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5px;
+    }
+
+    .slider-logo:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border-radius: 50%;
+      z-index: 2;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+
+    input:checked + .slider-logo:before {
+      transform: translateX(26px);
+    }
+
+    input:checked + .slider-logo {
+      background-color: #3b71ca;
+    }
+
+    .slider-logo i {
+      font-size: 10px;
+      z-index: 1;
+    }
+
+    .slider-logo .fa-sun { color: #f59e0b; }
+    .slider-logo .fa-moon { color: #e2e8f0; }
+
+    body.dark-mode .slider-logo { background-color: #475569; }
+    body.dark-mode input:checked + .slider-logo { background-color: #5a8fdc; }
+
+    /* Responsive */
+    @media (max-width: 550px) {
+      .support-card {
+        padding: 1.5rem;
+      }
+      .support-logo {
+        width: 90px;
+        height: 90px;
+      }
+      .support-title {
+        font-size: 1.4rem;
+      }
+      .support-text {
+        font-size: 0.85rem;
+      }
+      .donation-link {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+        max-width: 100%;
+      }
+      .back-button {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.8rem;
+      }
+      .brand-name {
+        font-size: 1.2rem;
+      }
+      .header-container {
+        padding: 0.6rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-container">
+    <div class="brand" id="brandLogo">
+      <span class="brand-name">Schwans ML</span>
+    </div>
+    <div class="right-actions">
+      <div class="theme-toggle-wrapper">
+        <label class="logo-switch">
+          <input type="checkbox" id="themeToggleSwitch">
+          <span class="slider-logo">
+            <i class="fas fa-sun"></i>
+            <i class="fas fa-moon"></i>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="main-content">
+  <div class="support-card">
+    <div class="support-logo-container">
+      <img src="https://ik.imagekit.io/SchwanzML13/register.png" 
+           alt="Schwans ML Logo" 
+           class="support-logo" 
+           onerror="this.src='https://placehold.co/130x130?text=Schwans+ML&color=3b71ca&font=roboto'">
+    </div>
+    
+    <h1 class="support-title">Support Admin</h1>
+    <p class="support-text">
+      Dukung kami agar terus berkembang dan menyediakan skin-skin terbaik 
+      untuk komunitas Mobile Legends.
+    </p>
+    
+    <div class="support-quote">
+      <i class="fas fa-quote-left" style="margin-right: 8px; color: #3b71ca;"></i>
+      Setiap dukungan yang Anda berikan akan digunakan untuk pengembangan 
+      website, maintenance server, dan pembelian resource terbaru.
+    </div>
+    
+    <a href="https://tako.id/SchwanzML" target="_blank" rel="noopener noreferrer" class="donation-link">
+      <i class="fas fa-heart"></i> Donasi via Tako.ID
+    </a>
+    
+    <div class="payment-info">
+      <i class="fas fa-credit-card"></i> Support via QRIS, Bank Transfer, E-Wallet (DANA, OVO, GoPay)
+    </div>
+    
+    <div>
+      <button class="back-button" id="backBtn">
+        <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+      </button>
+    </div>
+    
+    <div class="footer-note">
+      <i class="fas fa-hand-holding-heart"></i> 
+      Terima kasih atas dukungannya! 
+      <span class="footer-heart">❤️</span>
+    </div>
+  </div>
+</main>
+
+<script>
+  // ==================== ELEMENTS ====================
+  const backBtn = document.getElementById('backBtn');
+  const brandLogo = document.getElementById('brandLogo');
+  const themeToggle = document.getElementById('themeToggleSwitch');
+
+  // ==================== NAVIGATION ====================
+  function goToHome() {
+    window.location.href = 'index.html';
+  }
+
+  if (backBtn) {
+    backBtn.addEventListener('click', goToHome);
+  }
+  
+  if (brandLogo) {
+    brandLogo.addEventListener('click', goToHome);
+  }
+
+  // ==================== THEME HANDLING ====================
+  function loadTheme() {
+    const savedTheme = localStorage.getItem('schwans-theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      if (themeToggle) themeToggle.checked = true;
+    } else if (savedTheme === 'light') {
+      document.body.classList.remove('dark-mode');
+      if (themeToggle) themeToggle.checked = false;
+    } else {
+      // Default: cek preferensi sistem
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) {
+        document.body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.checked = true;
+        localStorage.setItem('schwans-theme', 'dark');
+      } else {
+        document.body.classList.remove('dark-mode');
+        if (themeToggle) themeToggle.checked = false;
+        localStorage.setItem('schwans-theme', 'light');
+      }
+    }
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('change', function(e) {
+      if (e.target.checked) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('schwans-theme', 'dark');
+      } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('schwans-theme', 'light');
+      }
+    });
+  }
+
+  // Load theme saat halaman dimuat
+  loadTheme();
+
+  // Sinkronkan theme jika ada perubahan dari storage (misal dari tab lain)
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'schwans-theme') {
+      if (e.newValue === 'dark') {
+        document.body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.checked = true;
+      } else if (e.newValue === 'light') {
+        document.body.classList.remove('dark-mode');
+        if (themeToggle) themeToggle.checked = false;
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

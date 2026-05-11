@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Schwans ML - Mini Card Wide | Lihat Semua</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #f4f7fc 0%, #eef2f8 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.25s ease;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(145deg, #121826 0%, #0f141f 100%);
+    }
+    body.dark-mode .site-header {
+      background: rgba(18, 24, 32, 0.96);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .brand-name {
+      background: linear-gradient(125deg, #b9d0f0, #8ab3e6, #6c9fd1);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    body.dark-mode .search-input-modern {
+      background: #1e2538;
+      border-color: #2d3648;
+      color: #eef2ff;
+    }
+    body.dark-mode .icon-btn {
+      color: #cfdef5;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    body.dark-mode .hero-card {
+      background: rgba(25, 32, 45, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .mini-card {
+      background: rgba(18, 24, 36, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+    }
+    body.dark-mode .mini-card-title {
+      color: #e2e8f0;
+    }
+    body.dark-mode .mini-card-date {
+      color: #9aa9c1;
+    }
+    body.dark-mode .side-drawer {
+      background: #1a1f2e;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .action-button {
+      background: #2d374b;
+      border-color: #4a5568;
+      color: #e2e8f0;
+    }
+    body.dark-mode .section-header {
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+    body.dark-mode .site-footer {
+      background: rgba(18, 24, 32, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .footer-text {
+      color: #8f9eb2;
+    }
+    body.dark-mode .footer-link {
+      color: #a0b5d0;
+    }
+    body.dark-mode .pagination-container {
+      background: rgba(25, 32, 45, 0.5);
+    }
+    body.dark-mode .page-btn {
+      background: #1e2538;
+      border-color: #2d3648;
+      color: #e2e8f0;
+    }
+    body.dark-mode .page-btn:hover:not(:disabled) {
+      background: #3b71ca;
+      border-color: #3b71ca;
+    }
+    body.dark-mode .page-btn.active {
+      background: #3b71ca;
+      border-color: #3b71ca;
+    }
+    body.dark-mode .search-bottom-input {
+      background: #1e2538;
+      border-color: #2d3648;
+      color: #eef2ff;
+    }
+
+    /* Active menu highlight untuk sidebar */
+    .drawer-menu li.active-menu {
+      background: #eef2fe;
+      color: #1e3a8a;
+      font-weight: 700;
+      border-left: 3px solid #3b71ca;
+      transform: translateX(2px);
+    }
+    body.dark-mode .drawer-menu li.active-menu {
+      background: #2d3a5c;
+      color: #b9d0ff;
+      border-left-color: #6c9fd1;
+    }
+    .drawer-menu li.active-menu i {
+      color: #3b71ca;
+    }
+    body.dark-mode .drawer-menu li.active-menu i {
+      color: #9abae0;
+    }
+
+    /* HEADER */
+    .site-header {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .header-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #1e2f4b, #2c3e66, #1b4a6e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .search-center-area {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      max-width: 320px;
+    }
+    .search-slide-center {
+      width: 0%;
+      opacity: 0;
+      overflow: hidden;
+      transition: width 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.3s ease;
+      position: relative;
+    }
+    .search-slide-center.open {
+      width: 100%;
+      opacity: 1;
+    }
+    .search-input-modern {
+      width: 100%;
+      padding: 0.55rem 1rem 0.55rem 2.3rem;
+      border: 1px solid #d0ddee;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      outline: none;
+      background: white;
+    }
+    .search-input-modern:focus {
+      border-color: #3b71ca;
+      box-shadow: 0 0 0 3px rgba(59, 113, 202, 0.12);
+    }
+    .search-icon-inside {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      color: #8ca0b5;
+      pointer-events: none;
+    }
+    .right-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .icon-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      color: #1f2e45;
+      background: rgba(0, 0, 0, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-btn:hover {
+      background: rgba(0, 0, 0, 0.08);
+      transform: scale(0.96);
+    }
+
+    /* DRAWER */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0px);
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2), opacity 0.35s ease;
+      z-index: 200;
+    }
+    .menu-overlay.active {
+      visibility: visible;
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+    .side-drawer {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 280px;
+      max-width: 80vw;
+      height: 100%;
+      background: #ffffff;
+      box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+      transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1.05);
+      z-index: 210;
+      padding: 1.8rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .side-drawer.open {
+      right: 0;
+    }
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eaf0f6;
+      padding-bottom: 0.8rem;
+    }
+    .drawer-header h3 {
+      font-weight: 700;
+      font-size: 1.3rem;
+      background: linear-gradient(135deg, #1E2F4B, #2c3e66);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .close-drawer {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #5a6e84;
+      transition: transform 0.25s ease;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .close-drawer:hover {
+      transform: rotate(90deg) scale(1.02);
+      color: #d9534f;
+    }
+    .drawer-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .drawer-menu li {
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.6rem 0.7rem;
+      border-radius: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #1f2e46;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .drawer-menu li i {
+      width: 24px;
+      font-size: 1rem;
+      color: #3b71ca;
+    }
+    .drawer-menu li:hover {
+      background: #f0f4fe;
+      transform: translateX(5px);
+    }
+    .theme-switch-item {
+      display: flex;
+      align-items: center;
+    }
+    .logo-switch {
+      position: relative;
+      display: inline-block;
+      width: 58px;
+      height: 28px;
+    }
+    .logo-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider-logo {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cbd5e1;
+      transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border-radius: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5px;
+    }
+    .slider-logo:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border-radius: 50%;
+      z-index: 2;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+    input:checked + .slider-logo:before {
+      transform: translateX(30px);
+    }
+    input:checked + .slider-logo {
+      background-color: #3b71ca;
+    }
+    .slider-logo i {
+      font-size: 11px;
+      z-index: 1;
+    }
+    .slider-logo .fa-sun { color: #f59e0b; }
+    .slider-logo .fa-moon { color: #e2e8f0; }
+    body.dark-mode .slider-logo { background-color: #475569; }
+    body.dark-mode input:checked + .slider-logo { background-color: #5a8fdc; }
+
+    /* ===== MAIN ===== */
+    .main-content {
+      flex: 1;
+      max-width: 100%;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    
+    /* Hero card */
+    .hero-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    /* SECTION HEADER dengan tombol toggle */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+      padding-bottom: 0.6rem;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1e2f4b;
+      letter-spacing: -0.2px;
+      background: linear-gradient(120deg, #1e2f4b, #2c5270);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    body.dark-mode .section-title {
+      background: linear-gradient(120deg, #c9ddf5, #9abae0);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .action-button {
+      background: transparent;
+      border: 1px solid #b9c8e5;
+      border-radius: 40px;
+      padding: 0.35rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #2c3e66;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Inter', sans-serif;
+    }
+    .action-button i {
+      font-size: 0.7rem;
+    }
+    .action-button:hover {
+      background: #3b71ca10;
+      border-color: #3b71ca;
+      transform: translateY(-2px);
+    }
+    body.dark-mode .action-button {
+      border-color: #4b5a7a;
+      color: #ccdeff;
+    }
+    body.dark-mode .action-button:hover {
+      background: #2d3a5e;
+      border-color: #7c9bdf;
+    }
+
+    /* Grid container */
+    .dual-box-container {
+      display: grid;
+      grid-template-columns: repeat(2, 200px);
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    
+    /* MINI CARD */
+    .mini-card {
+      width: 200px; 
+      min-width: 200px; 
+      flex-shrink: 0;
+      background: white;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .mini-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .mini-card-image {
+      width: 100%;
+      height: 110px;
+      object-fit: cover;
+      display: block;
+      background-color: #eef2fa;
+    }
+    .mini-card-content {
+      padding: 0.8rem 0.7rem 0.9rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .mini-card-date {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #6c7a91;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 0.4rem;
+    }
+    .mini-card-date i {
+      font-size: 0.7rem;
+      color: #3b71ca;
+    }
+    .mini-card-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #1e2f4b;
+      line-height: 1.3;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .empty-message {
+      text-align: center;
+      padding: 2rem;
+      color: #6c7a91;
+      font-size: 0.9rem;
+      grid-column: 1 / -1;
+    }
+
+    /* ===== PAGINATION STYLES ===== */
+    .pagination-wrapper {
+      margin-top: 2rem;
+    }
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      background: rgba(255, 255, 255, 0.5);
+      padding: 0.8rem;
+      border-radius: 60px;
+    }
+    .page-btn {
+      background: white;
+      border: 1px solid #d0ddee;
+      color: #2c3e66;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .page-btn:hover:not(:disabled) {
+      background: #3b71ca;
+      border-color: #3b71ca;
+      color: white;
+      transform: translateY(-2px);
+    }
+    .page-btn.active {
+      background: #3b71ca;
+      border-color: #3b71ca;
+      color: white;
+    }
+    .page-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .page-number {
+      background: white;
+      border: 1px solid #d0ddee;
+      min-width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .page-number:hover:not(.active) {
+      background: #eef2fe;
+      border-color: #3b71ca;
+    }
+    .page-info {
+      font-size: 0.75rem;
+      color: #8ca0b5;
+      margin-left: 0.5rem;
+    }
+    .search-bottom {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .search-bottom-input {
+      width: 100%;
+      max-width: 300px;
+      padding: 0.55rem 1rem 0.55rem 2.3rem;
+      border: 1px solid #d0ddee;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      outline: none;
+      background: white;
+      position: relative;
+    }
+    .search-bottom-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 300px;
+    }
+    .search-bottom-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      color: #8ca0b5;
+      pointer-events: none;
+    }
+    .search-bottom-input:focus {
+      border-color: #3b71ca;
+      box-shadow: 0 0 0 3px rgba(59, 113, 202, 0.12);
+    }
+    .pagination-nav-buttons {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      margin-top: 2rem;
+      padding: 1.5rem 1rem;
+    }
+    .footer-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      text-align: center;
+    }
+    .footer-social {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 0.25rem;
+    }
+    .footer-social a {
+      color: #5a6e84;
+      font-size: 1.2rem;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.03);
+      text-decoration: none;
+    }
+    .footer-social a:hover {
+      color: #3b71ca;
+      transform: translateY(-3px);
+      background: rgba(59, 113, 202, 0.1);
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer-link {
+      color: #6c7a91;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .footer-link:hover {
+      color: #3b71ca;
+    }
+    .footer-text {
+      color: #8f9eb2;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+    .footer-heart {
+      color: #e53e3e;
+      display: inline-block;
+      animation: heartbeat 1.5s ease infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 500px) {
+      .dual-box-container {
+        grid-template-columns: repeat(2, 150px);
+        gap: 1rem;
+      }
+      .mini-card {
+        width: 150px;
+        min-width: 150px;
+      }
+      .mini-card-image {
+        height: 85px;
+      }
+      .brand-name {
+        font-size: 1.1rem;
+        white-space: normal;
+      }
+      .header-container {
+        padding: 0.6rem 1rem;
+      }
+      .hero-card {
+        padding: 1.2rem;
+      }
+      .section-title {
+        font-size: 1.1rem;
+      }
+      .action-button {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.8rem;
+      }
+      .footer-links {
+        gap: 1rem;
+      }
+      .footer-link {
+        font-size: 0.7rem;
+      }
+      .footer-social a {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+      }
+      .page-btn, .page-number {
+        width: 34px;
+        height: 34px;
+        font-size: 0.8rem;
+      }
+      .pagination-container {
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-container">
+    <div class="brand" id="brandLogo">
+      <span class="brand-name">Schwans ML</span>
+    </div>
+
+    <div class="search-center-area">
+      <div class="search-slide-center" id="searchSlideCenter">
+        <i class="fas fa-search search-icon-inside"></i>
+        <input type="text" class="search-input-modern" id="searchInputModern" placeholder="Cari judul skin...">
+      </div>
+    </div>
+
+    <div class="right-actions">
+      <button class="icon-btn" id="searchToggleBtnCenter">
+        <i class="fas fa-search"></i>
+      </button>
+      <button class="icon-btn hamburger-btn" id="menuToggleBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<div class="side-drawer" id="sideDrawer">
+  <div class="drawer-header">
+    <h3>Menu</h3>
+    <button class="close-drawer" id="closeDrawerBtn">&times;</button>
+  </div>
+
+  <div class="theme-switch-item">
+    <label class="logo-switch">
+      <input type="checkbox" id="themeToggleSwitch">
+      <span class="slider-logo">
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
+      </span>
+    </label>
+  </div>
+
+  <ul class="drawer-menu">
+    <li id="menuHome"><i class="fas fa-home"></i> Beranda</li>
+    <li id="menuAllSkin"><i class="fas fa-layer-group"></i> All Skin</li>
+    <li id="menuTutorial"><i class="fas fa-code-branch"></i> Cara Pemasangan Script Skin</li>
+    <li id="menuSupportAdmin"><i class="fas fa-headset"></i> Support Admin</li>
+  </ul>
+
+  <div style="margin-top: auto; font-size: 0.6rem; color: #8f9eb2; text-align: center;">
+    © Schwans ML 2025
+  </div>
+</div>
+
+<main class="main-content">
+  <div class="hero-card">
+    <div class="section-header">
+      <span class="section-title"><i class="fas fa-layer-group" style="margin-right: 6px;"></i> Koleksi Skin ML</span>
+      <button class="action-button" id="toggleViewBtn">
+        <i class="fas fa-eye"></i> Lihat semua
+      </button>
+    </div>
+    <div class="dual-box-container" id="cardContainer">
+      <!-- dynamic from JS -->
+    </div>
+    
+    <!-- Pagination & Search Bottom (hanya tampil di mode Lihat Semua) -->
+    <div id="paginationSection" style="display: none;">
+      <div class="pagination-wrapper">
+        <div class="pagination-container">
+          <div class="pagination-nav-buttons">
+            <button class="page-btn" id="prevPageBtn" disabled>
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+          <div id="pageNumbersContainer" class="pagination-nav-buttons">
+            <!-- Page numbers will be inserted here -->
+          </div>
+          <div class="pagination-nav-buttons">
+            <button class="page-btn" id="nextPageBtn" disabled>
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          <span class="page-info" id="pageInfo"></span>
+        </div>
+        <div class="search-bottom">
+          <div class="search-bottom-wrapper">
+            <i class="fas fa-search search-bottom-icon"></i>
+            <input type="text" id="searchBottomInput" class="search-bottom-input" placeholder="Cari halaman... (1-...)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-social">
+      <a href="https://t.me/schwanzml" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+        <i class="fab fa-telegram-plane"></i>
+      </a>
+    </div>
+    <div class="footer-links">
+      <a href="#" class="footer-link">Tentang Kami</a>
+      <a href="#" class="footer-link">Kebijakan Privasi</a>
+      <a href="#" class="footer-link">Syarat & Ketentuan</a>
+      <a href="#" class="footer-link">Bantuan</a>
+    </div>
+    <div class="footer-text">
+      © 2026 Schwans ML • Built with for Mobile Legends Community
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Variabel untuk menyimpan data
+  let skinData = [];
+  let currentFilter = '';
+  let isViewAllMode = false;
+  
+  // Variabel untuk pagination
+  let currentPage = 1;
+  let itemsPerPage = 6; // 2 kolom x 3 baris = 6 item per halaman
+  let totalPages = 1;
+  let paginatedData = [];
+
+  // Ambil elemen yang dibutuhkan
+  const searchInput = document.getElementById('searchInputModern');
+  const searchBottomInput = document.getElementById('searchBottomInput');
+  const cardContainer = document.getElementById('cardContainer');
+  const toggleViewBtn = document.getElementById('toggleViewBtn');
+  const searchSlide = document.getElementById('searchSlideCenter');
+  const searchBtn = document.getElementById('searchToggleBtnCenter');
+  const menuBtn = document.getElementById('menuToggleBtn');
+  const drawer = document.getElementById('sideDrawer');
+  const overlay = document.getElementById('menuOverlay');
+  const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+  const themeSwitch = document.getElementById('themeToggleSwitch');
+  const menuAllSkin = document.getElementById('menuAllSkin');
+  const menuHome = document.getElementById('menuHome');
+  const menuTutorial = document.getElementById('menuTutorial');
+  const menuSupportAdmin = document.getElementById('menuSupportAdmin');
+  const brandLogo = document.getElementById('brandLogo');
+  const paginationSection = document.getElementById('paginationSection');
+  const prevPageBtn = document.getElementById('prevPageBtn');
+  const nextPageBtn = document.getElementById('nextPageBtn');
+  const pageNumbersContainer = document.getElementById('pageNumbersContainer');
+  const pageInfo = document.getElementById('pageInfo');
+
+  let searchOpen = false;
+
+  // Fungsi untuk memberikan highlight aktif pada menu Beranda
+  function setActiveMenu() {
+    const allMenuItems = document.querySelectorAll('.drawer-menu li');
+    allMenuItems.forEach(item => item.classList.remove('active-menu'));
+    if (menuHome) menuHome.classList.add('active-menu');
+  }
+
+  // Fungsi toggle search
+  function toggleSearch(force) {
+    searchOpen = force !== undefined ? force : !searchOpen;
+    if (searchOpen) {
+      searchSlide.classList.add('open');
+      setTimeout(() => searchInput?.focus(), 160);
+    } else {
+      searchSlide.classList.remove('open');
+      if (searchInput) searchInput.value = '';
+      if (!isViewAllMode) {
+        currentFilter = '';
+        renderCards();
+      } else {
+        currentFilter = '';
+        applyPagination();
+      }
+    }
+  }
+
+  if (searchBtn) {
+    searchBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleSearch();
+    });
+  }
+
+  // Drawer functions
+  function openDrawer() { drawer.classList.add('open'); overlay.classList.add('active'); }
+  function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('active'); }
+  if (menuBtn) menuBtn.addEventListener('click', openDrawer);
+  if (overlay) overlay.addEventListener('click', closeDrawer);
+  if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+
+  // Theme functions
+  function loadTheme() {
+    const saved = localStorage.getItem('schwans-theme');
+    if (saved === 'dark') {
+      document.body.classList.add('dark-mode');
+      if (themeSwitch) themeSwitch.checked = true;
+    }
+  }
+  if (themeSwitch) {
+    themeSwitch.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('schwans-theme', 'dark');
+      } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('schwans-theme', 'light');
+      }
+    });
+  }
+  loadTheme();
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // Fungsi untuk redirect ke detail skin
+  function redirectToDetail(title, date, videoUrl, id, replaceItems) {
+    const replaceParam = encodeURIComponent(JSON.stringify(replaceItems || []));
+    window.location.href = `detail-skin.html?title=${encodeURIComponent(title)}&date=${encodeURIComponent(date)}&video=${encodeURIComponent(videoUrl)}&id=${id}&replace=${replaceParam}`;
+  }
+
+  // Fungsi render kartu dari array data
+  function renderCardFromArray(dataArray) {
+    if (!cardContainer) return;
+    
+    if (!dataArray || dataArray.length === 0) {
+      cardContainer.innerHTML = `<div class="empty-message">
+        <i class="fas fa-search-slash"></i> Tidak ada skin ditemukan
+      </div>`;
+      return;
+    }
+    
+    const html = dataArray.map((card, idx) => {
+      const imgSrc = card.image && card.image.trim() !== '' ? card.image : 'https://picsum.photos/id/20/200/110';
+      const originalSkin = listSkin[card.originalIndex !== undefined ? card.originalIndex : card.id];
+      const replaceItems = originalSkin && originalSkin.replaceItems ? JSON.stringify(originalSkin.replaceItems) : '[]';
+      
+      return `
+        <div class="mini-card" data-id="${card.id}" data-title="${escapeHtml(card.title)}" data-date="${card.date}" data-video="${card.videoUrl || ''}" data-replace='${replaceItems}'>
+          <img class="mini-card-image" src="${imgSrc}" alt="${escapeHtml(card.title)}" loading="lazy" onerror="this.src='https://picsum.photos/id/20/200/110'">
+          <div class="mini-card-content">
+            <div class="mini-card-date">
+              <i class="far fa-calendar-alt"></i> ${escapeHtml(card.date || 'Tidak diketahui')}
+            </div>
+            <div class="mini-card-title">${escapeHtml(card.title)}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    cardContainer.innerHTML = html;
+
+    // Tambahkan event listener ke setiap mini-card
+    document.querySelectorAll('.mini-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.mini-card')) {
+          const id = card.getAttribute('data-id');
+          const title = card.getAttribute('data-title');
+          const date = card.getAttribute('data-date');
+          const video = card.getAttribute('data-video');
+          const replaceItemsStr = card.getAttribute('data-replace') || '[]';
+          
+          let replaceItems = [];
+          try {
+            replaceItems = JSON.parse(replaceItemsStr);
+          } catch(e) {
+            console.error('Error parsing replaceItems:', e);
+            replaceItems = [];
+          }
+          
+          sessionStorage.setItem('selectedSkin', JSON.stringify({
+            id: id,
+            title: title,
+            date: date,
+            videoUrl: video,
+            replaceItems: replaceItems
+          }));
+          
+          redirectToDetail(title, date, video, id, replaceItems);
+        }
+      });
+    });
+  }
+
+  // Fungsi render kartu mode normal (tanpa pagination, hanya 4-6 item)
+  function renderCards() {
+    if (!cardContainer) return;
+    
+    if (isViewAllMode) {
+      applyPagination();
+      return;
+    }
+    
+    let filtered = skinData;
+    if (currentFilter.trim() !== '') {
+      const lowerFilter = currentFilter.toLowerCase();
+      filtered = skinData.filter(card => {
+        return card.title && card.title.toLowerCase().includes(lowerFilter);
+      });
+    }
+    
+    // Mode normal: tampilkan hanya 6 item pertama
+    const limitedData = filtered.slice(0, 6);
+    
+    if (limitedData.length === 0) {
+      cardContainer.innerHTML = `<div class="empty-message">
+        <i class="fas fa-search-slash"></i> Tidak ada skin ditemukan untuk "${escapeHtml(currentFilter)}"
+      </div>`;
+      return;
+    }
+    
+    renderCardFromArray(limitedData);
+  }
+
+  // ==================== PAGINATION FUNCTIONS ====================
+  function getFilteredData() {
+    let filtered = skinData;
+    if (currentFilter.trim() !== '') {
+      const lowerFilter = currentFilter.toLowerCase();
+      filtered = skinData.filter(card => {
+        return card.title && card.title.toLowerCase().includes(lowerFilter);
+      });
+    }
+    return filtered;
+  }
+
+  function updatePagination() {
+    const filteredData = getFilteredData();
+    totalPages = Math.ceil(filteredData.length / itemsPerPage);
+    if (totalPages === 0) totalPages = 1;
+    
+    // Adjust current page if out of bounds
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    paginatedData = filteredData.slice(startIndex, endIndex);
+    
+    // Update UI
+    renderCardFromArray(paginatedData);
+    updatePageButtons();
+    
+    // Update page info
+    if (pageInfo) {
+      pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages}`;
+    }
+  }
+
+  function updatePageButtons() {
+    if (!prevPageBtn || !nextPageBtn) return;
+    
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages;
+    
+    // Generate page numbers
+    if (pageNumbersContainer) {
+      pageNumbersContainer.innerHTML = '';
+      
+      // Tentukan range halaman yang ditampilkan (max 5)
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, startPage + 4);
+      
+      if (endPage - startPage < 4 && startPage > 1) {
+        startPage = Math.max(1, endPage - 4);
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.textContent = i;
+        pageBtn.className = 'page-number' + (i === currentPage ? ' active' : '');
+        pageBtn.addEventListener('click', () => {
+          currentPage = i;
+          updatePagination();
+        });
+        pageNumbersContainer.appendChild(pageBtn);
+      }
+    }
+  }
+
+  function applyPagination() {
+    const filteredData = getFilteredData();
+    totalPages = Math.ceil(filteredData.length / itemsPerPage);
+    if (totalPages === 0) totalPages = 1;
+    
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+    
+    updatePagination();
+  }
+
+  function goToPageByNumber(pageNumber) {
+    const filteredData = getFilteredData();
+    const maxPage = Math.ceil(filteredData.length / itemsPerPage);
+    if (maxPage === 0) return;
+    
+    let targetPage = parseInt(pageNumber);
+    if (isNaN(targetPage)) return;
+    if (targetPage < 1) targetPage = 1;
+    if (targetPage > maxPage) targetPage = maxPage;
+    
+    currentPage = targetPage;
+    updatePagination();
+  }
+
+  // Search bottom input handler
+  if (searchBottomInput) {
+    searchBottomInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const pageNum = parseInt(searchBottomInput.value);
+        if (!isNaN(pageNum)) {
+          goToPageByNumber(pageNum);
+          searchBottomInput.value = '';
+        } else if (searchBottomInput.value.toLowerCase() === 'next') {
+          if (currentPage < totalPages) {
+            currentPage++;
+            updatePagination();
+          }
+          searchBottomInput.value = '';
+        } else if (searchBottomInput.value.toLowerCase() === 'prev') {
+          if (currentPage > 1) {
+            currentPage--;
+            updatePagination();
+          }
+          searchBottomInput.value = '';
+        }
+      }
+    });
+  }
+
+  // Event listeners untuk tombol pagination
+  if (prevPageBtn) {
+    prevPageBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        updatePagination();
+      }
+    });
+  }
+  
+  if (nextPageBtn) {
+    nextPageBtn.addEventListener('click', () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        updatePagination();
+      }
+    });
+  }
+
+  // Fungsi parse date untuk sorting
+  function parseDate(dateStr) {
+    const months = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, Mei: 4, May: 4, Jun: 5,
+      Jul: 6, Agu: 7, Aug: 7, Sep: 8, Okt: 9, Oct: 9, Nov: 10, Des: 11, Dec: 11
+    };
+    const parts = dateStr.split(" ");
+    if (parts.length === 3) {
+      const [day, monthStr, year] = parts;
+      return new Date(year, months[monthStr], parseInt(day));
+    }
+    return new Date(0);
+  }
+
+  // Fungsi load data dari listSkin global
+  function loadSkinData() {
+    if (typeof listSkin !== 'undefined' && Array.isArray(listSkin) && listSkin.length > 0) {
+      console.log('Data listSkin ditemukan:', listSkin.length, 'item');
+      skinData = listSkin.map((item, idx) => ({
+        id: idx,
+        originalIndex: idx,
+        title: item.title || `Skin ${idx+1}`,
+        date: item.date || "2025",
+        image: item.image || `https://picsum.photos/id/${40 + (idx % 50)}/200/110`,
+        videoUrl: item.videoUrl || ''
+      }));
+      // Sortir berdasarkan tanggal terbaru
+      skinData.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+      console.log('Data setelah sorting:', skinData);
+      renderCards();
+    } else {
+      console.warn("listSkin tidak ditemukan. Pastikan list-skin.js sudah dimuat dan mendefinisikan variabel 'listSkin'");
+      cardContainer.innerHTML = `<div class="empty-message">
+        <i class="fas fa-database"></i> Data skin belum tersedia. Silakan periksa file list-skin.js
+      </div>`;
+    }
+  }
+
+  // Fungsi show all cards dengan pagination
+  function showAllCards() {
+    if (searchInput) searchInput.value = '';
+    if (searchBottomInput) searchBottomInput.value = '';
+    currentFilter = '';
+    if (searchOpen) {
+      toggleSearch(false);
+    }
+    currentPage = 1;
+    isViewAllMode = true;
+    toggleViewBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Kembali';
+    paginationSection.style.display = 'block';
+    applyPagination();
+  }
+
+  function exitAllCardsMode() {
+    isViewAllMode = false;
+    toggleViewBtn.innerHTML = '<i class="fas fa-eye"></i> Lihat semua';
+    paginationSection.style.display = 'none';
+    currentPage = 1;
+    if (searchInput) searchInput.value = '';
+    currentFilter = '';
+    renderCards();
+  }
+
+  function goToHomePage() {
+    window.location.href = 'index.html';
+  }
+
+  function goToTutorialPage() {
+    window.location.href = 'tutorial.html';
+  }
+
+  function goToSupportPage() {
+    window.location.href = 'support.html';
+  }
+
+  function onToggleButtonClick() {
+    if (!isViewAllMode) {
+      showAllCards();
+    } else {
+      exitAllCardsMode();
+    }
+  }
+
+  function goToAllSkin() {
+    window.location.href = 'all-skin.html';
+  }
+
+  // Event listener untuk search input (header)
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentFilter = e.target.value;
+      if (isViewAllMode) {
+        currentPage = 1;
+        applyPagination();
+      } else {
+        renderCards();
+      }
+    });
+  }
+
+  if (toggleViewBtn) {
+    toggleViewBtn.addEventListener('click', onToggleButtonClick);
+  }
+
+  if (menuAllSkin) {
+    menuAllSkin.addEventListener('click', goToAllSkin);
+  }
+
+  if (menuHome) {
+    menuHome.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  }
+
+  if (menuTutorial) {
+    menuTutorial.addEventListener('click', goToTutorialPage);
+  }
+
+  if (menuSupportAdmin) {
+    menuSupportAdmin.addEventListener('click', goToSupportPage);
+  }
+
+  if (brandLogo) {
+    brandLogo.addEventListener('click', goToHomePage);
+  }
+
+  // Set active menu highlight untuk Beranda saat halaman dimuat
+  setActiveMenu();
+
+  // Tunggu hingga semua script termasuk list-skin.js selesai dimuat
+  window.addEventListener('load', function() {
+    console.log('Window loaded, memuat data skin...');
+    loadSkinData();
+  });
+</script>
+
+<!-- Memuat list-skin.js (file eksternal yang berisi variabel listSkin) -->
+<script src="list-skin.js"></script>
+<script>
+    // Tambahkan ini untuk memastikan data termuat
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Index page loaded, waiting for database...');
+    });
+</script>
+</body>
+</html>

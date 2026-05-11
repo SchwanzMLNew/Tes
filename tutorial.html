@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Schwans ML - Tutorial Pemasangan Script Skin (Lengkap)</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #f4f7fc 0%, #eef2f8 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.25s ease;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(145deg, #121826 0%, #0f141f 100%);
+    }
+    body.dark-mode .site-header {
+      background: rgba(18, 24, 32, 0.96);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .brand-name {
+      background: linear-gradient(125deg, #b9d0f0, #8ab3e6, #6c9fd1);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    body.dark-mode .search-input-modern {
+      background: #1e2538;
+      border-color: #2d3648;
+      color: #eef2ff;
+    }
+    body.dark-mode .icon-btn {
+      color: #cfdef5;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    body.dark-mode .hero-card {
+      background: rgba(25, 32, 45, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .side-drawer {
+      background: #1a1f2e;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .drawer-menu li {
+      color: #e0e7ff;
+    }
+    body.dark-mode .drawer-menu li i {
+      color: #8aadf0;
+    }
+    body.dark-mode .drawer-menu li:hover {
+      background: #2d3a5c;
+    }
+    body.dark-mode .drawer-menu li.active-menu {
+      background: #2d3a5c;
+      color: #b9d0ff;
+      border-left-color: #6c9fd1;
+    }
+    body.dark-mode .drawer-menu li.active-menu i {
+      color: #9abae0;
+    }
+    .drawer-menu li.active-menu {
+      background: #eef2fe;
+      color: #1e3a8a;
+      font-weight: 700;
+      border-left: 3px solid #3b71ca;
+      transform: translateX(2px);
+    }
+    body.dark-mode .step-card {
+      background: rgba(30, 36, 50, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .step-title {
+      color: #bfd9ff;
+      background: rgba(108, 159, 209, 0.2);
+    }
+    body.dark-mode .image-caption {
+      color: #a7bbdd;
+    }
+    body.dark-mode .footer-note {
+      background: #1f2a40;
+      color: #cbddf5;
+    }
+    
+    /* ===== PERBAIKAN FOOTER DARK MODE ===== */
+    body.dark-mode .site-footer {
+      background: rgba(18, 24, 32, 0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    body.dark-mode .footer-text {
+      color: #8f9eb2;
+    }
+    body.dark-mode .footer-social a {
+      color: #9fb0cc;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    body.dark-mode .footer-social a:hover {
+      color: #6c9fd1;
+      background: rgba(108, 159, 209, 0.15);
+    }
+    body.dark-mode .footer-link {
+      color: #9fb0cc;
+    }
+    body.dark-mode .footer-link:hover {
+      color: #6c9fd1;
+    }
+    body.dark-mode .close-drawer {
+      color: #cfdef5;
+    }
+    body.dark-mode .drawer-header h3 {
+      background: linear-gradient(135deg, #b9d0f0, #8ab3e6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    body.dark-mode .section-title {
+      background: linear-gradient(120deg, #c9ddf5, #9abae0);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    body.dark-mode .slider-logo {
+      background-color: #475569;
+    }
+    body.dark-mode input:checked + .slider-logo {
+      background-color: #5a8fdc;
+    }
+
+    /* Header & Drawer */
+    .site-header {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .header-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #1e2f4b, #2c3e66, #1b4a6e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .search-center-area {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      max-width: 320px;
+    }
+    .search-slide-center {
+      width: 0%;
+      opacity: 0;
+      overflow: hidden;
+      transition: width 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.3s ease;
+      position: relative;
+    }
+    .search-slide-center.open {
+      width: 100%;
+      opacity: 1;
+    }
+    .search-input-modern {
+      width: 100%;
+      padding: 0.55rem 1rem 0.55rem 2.3rem;
+      border: 1px solid #d0ddee;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      outline: none;
+      background: white;
+    }
+    .search-input-modern:focus {
+      border-color: #3b71ca;
+      box-shadow: 0 0 0 3px rgba(59, 113, 202, 0.12);
+    }
+    .search-icon-inside {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      color: #8ca0b5;
+      pointer-events: none;
+    }
+    .right-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .icon-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      color: #1f2e45;
+      background: rgba(0, 0, 0, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-btn:hover {
+      background: rgba(0, 0, 0, 0.08);
+      transform: scale(0.96);
+    }
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0px);
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2), opacity 0.35s ease;
+      z-index: 200;
+    }
+    .menu-overlay.active {
+      visibility: visible;
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+    .side-drawer {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 280px;
+      max-width: 80vw;
+      height: 100%;
+      background: #ffffff;
+      box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+      transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1.05);
+      z-index: 210;
+      padding: 1.8rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .side-drawer.open {
+      right: 0;
+    }
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eaf0f6;
+      padding-bottom: 0.8rem;
+    }
+    .drawer-header h3 {
+      font-weight: 700;
+      font-size: 1.3rem;
+      background: linear-gradient(135deg, #1E2F4B, #2c3e66);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .close-drawer {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: transform 0.25s ease;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5a6e84;
+    }
+    .close-drawer:hover {
+      transform: rotate(90deg) scale(1.02);
+      color: #d9534f;
+    }
+    .drawer-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .drawer-menu li {
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 0.6rem 0.7rem;
+      border-radius: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #1f2e46;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .drawer-menu li i {
+      width: 24px;
+      font-size: 1rem;
+      color: #3b71ca;
+    }
+    .drawer-menu li:hover {
+      background: #f0f4fe;
+      transform: translateX(5px);
+    }
+    .theme-switch-item {
+      display: flex;
+      align-items: center;
+    }
+    .logo-switch {
+      position: relative;
+      display: inline-block;
+      width: 58px;
+      height: 28px;
+    }
+    .logo-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider-logo {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cbd5e1;
+      transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border-radius: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5px;
+    }
+    .slider-logo:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border-radius: 50%;
+      z-index: 2;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+    input:checked + .slider-logo:before {
+      transform: translateX(30px);
+    }
+    input:checked + .slider-logo {
+      background-color: #3b71ca;
+    }
+    .slider-logo i {
+      font-size: 11px;
+      z-index: 1;
+    }
+    .slider-logo .fa-sun { color: #f59e0b; }
+    .slider-logo .fa-moon { color: #e2e8f0; }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      max-width: 100%;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    .hero-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 1.8rem;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+      padding-bottom: 0.6rem;
+    }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(120deg, #1e2f4b, #2c5270);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    /* tutorial steps grid */
+    .tutorial-steps-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .step-card {
+      background: rgba(245, 248, 250, 0.7);
+      border-radius: 1.5rem;
+      padding: 1.2rem;
+      transition: all 0.2s;
+      border: 1px solid rgba(59, 113, 202, 0.15);
+    }
+    .step-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0c2a4b;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(59, 113, 202, 0.08);
+      padding: 0.3rem 0.9rem;
+      border-radius: 40px;
+      width: fit-content;
+    }
+    .step-title i {
+      color: #3b71ca;
+      font-size: 1rem;
+    }
+    .tutorial-img {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 1rem;
+      box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+      display: block;
+      margin: 0 auto;
+      cursor: zoom-in;
+    }
+    .tutorial-img:hover {
+      transform: scale(1.01);
+    }
+    .image-caption {
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #2c4c7c;
+      text-align: center;
+      background: rgba(0,0,0,0.02);
+      padding: 0.3rem;
+      border-radius: 1rem;
+    }
+    .footer-note {
+      margin-top: 2rem;
+      background: #e9f0fe;
+      padding: 1rem;
+      border-radius: 1.2rem;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #1e2f4b;
+    }
+    
+    /* ===== FOOTER STYLE YANG BENAR (TERANG & GELAP SUDAH DIATUR) ===== */
+    .site-footer {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      margin-top: 2rem;
+      padding: 1.5rem 1rem;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .footer-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-social {
+      display: flex;
+      gap: 1.2rem;
+    }
+    .footer-social a {
+      color: #5a6e84;
+      font-size: 1.2rem;
+      transition: all 0.25s ease;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.03);
+      text-decoration: none;
+    }
+    .footer-social a:hover {
+      color: #3b71ca;
+      transform: translateY(-3px);
+      background: rgba(59, 113, 202, 0.1);
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer-link {
+      color: #6c7a91;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .footer-link:hover {
+      color: #3b71ca;
+    }
+    .footer-text {
+      color: #8f9eb2;
+      font-size: 0.7rem;
+      letter-spacing: 0.3px;
+    }
+    .footer-heart {
+      color: #e53e3e;
+      display: inline-block;
+      animation: heartbeat 1.5s ease infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+    
+    @media (max-width: 650px) {
+      .step-title { font-size: 0.85rem; }
+      .hero-card { padding: 1rem; }
+      .section-title { font-size: 1.1rem; }
+      .brand-name { font-size: 1.1rem; white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-container">
+    <div class="brand" id="brandLogo"><span class="brand-name">Schwans ML</span></div>
+    <div class="search-center-area">
+      <div class="search-slide-center" id="searchSlideCenter">
+        <i class="fas fa-search search-icon-inside"></i>
+        <input type="text" class="search-input-modern" id="searchInputModern" placeholder="Cari judul skin...">
+      </div>
+    </div>
+    <div class="right-actions">
+      <button class="icon-btn" id="searchToggleBtnCenter"><i class="fas fa-search"></i></button>
+      <button class="icon-btn hamburger-btn" id="menuToggleBtn"><i class="fas fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="side-drawer" id="sideDrawer">
+  <div class="drawer-header">
+    <h3>Menu</h3>
+    <button class="close-drawer" id="closeDrawerBtn">&times;</button>
+  </div>
+  <div class="theme-switch-item">
+    <label class="logo-switch">
+      <input type="checkbox" id="themeToggleSwitch">
+      <span class="slider-logo">
+        <i class="fas fa-sun"></i>
+        <i class="fas fa-moon"></i>
+      </span>
+    </label>
+  </div>
+  <ul class="drawer-menu">
+    <li id="menuHome"><i class="fas fa-home"></i> Beranda</li>
+    <li id="menuAllSkin"><i class="fas fa-layer-group"></i> All Skin</li>
+    <li id="menuTutorial"><i class="fas fa-code-branch"></i> Cara Pemasangan Script Skin</li>
+    <li><i class="fas fa-robot"></i> AI Models</li>
+  </ul>
+  <div style="margin-top: auto; font-size: 0.6rem; text-align: center; color: #8f9eb2;">© Schwans ML 2025</div>
+</div>
+
+<main class="main-content">
+  <div class="hero-card">
+    <div class="section-header">
+      <span class="section-title"><i class="fas fa-play-circle"></i> Panduan Pemasangan Script Skin (Langkah demi Langkah)</span>
+    </div>
+    <div class="tutorial-steps-grid">
+      <!-- STEP 1 -->
+      <div class="step-card">
+        <div class="step-title"><i class="fas fa-folder-open"></i> 1. Klik folder script yang kalian download</div>
+        <img class="tutorial-img" src="https://ik.imagekit.io/SchwanzML13/Tutorial/Picsart_26-05-02_17-23-37-077.jpg" alt="folder script" loading="lazy" onerror="this.src='https://placehold.co/800x400?text=Folder+Script'">
+        <div class="image-caption">📍 Pastikan file script sudah diekstrak dari zip</div>
+      </div>
+      <!-- STEP 2 -->
+      <div class="step-card">
+        <div class="step-title"><i class="fas fa-file-archive"></i> 2. klik teks Ekstrak</div>
+        <img class="tutorial-img" src="https://ik.imagekit.io/SchwanzML13/Tutorial/Picsart_26-05-02_17-24-16-824.jpg" alt="ekstrak file" loading="lazy">
+        <div class="image-caption">🔓 Ekstrak file script ke penyimpanan internal</div>
+      </div>
+      <!-- STEP 3 -->
+      <div class="step-card">
+        <div class="step-title"><i class="fas fa-microchip"></i> 3. klik memory perangkat</div>
+        <img class="tutorial-img" src="https://ik.imagekit.io/SchwanzML13/Tutorial/Picsart_26-05-02_17-37-01-032.jpg" alt="memory perangkat" loading="lazy">
+        <div class="image-caption">💾 Pilih penyimpanan internal / memori perangkat</div>
+      </div>
+      <!-- STEP 4 -->
+      <div class="step-card">
+        <div class="step-title"><i class="fab fa-android"></i> 4. klik folder android</div>
+        <img class="tutorial-img" src="https://ik.imagekit.io/SchwanzML13/Tutorial/Picsart_26-05-02_17-37-26-951.jpg" alt="folder android" loading="lazy">
+        <div class="image-caption">📁 Buka direktori Android</div>
+      </div>
+      <!-- STEP 5 -->
+      <div class="step-card">
+        <div class="step-title"><i class="fas fa-database"></i> 5. klik folder data</div>
+        <img class="tutorial-img" src="https://ik.imagekit.io/SchwanzML13/Tutorial/Picsart_26-05-02_17-37-46-997.jpg" alt="folder data" loading="lazy">
+        <div class="image-caption">🗂️ Masuk ke folder data (internal/data)</div>
+      </div>
+      <!-- STEP 6 -->
+      <div class="step-card">
+        <div class="step-title"><i class="fas fa-mouse-pointer"></i> 6. klik logo yang ada di pojok kanan bawah</div>
+        <img class="tutorial-img" src="https://ik.imagekit.io/SchwanzML13/Tutorial/Picsart_26-04-30_14-21-45-830.jpg" alt="logo pojok kanan" loading="lazy">
+        <div class="image-caption">⚙️ Gunakan menu atau ikon untuk akses lebih lanjut</div>
+      </div>
+      <!-- STEP 7 -->
+      <div class="step-card">
+        <div class="step-title"><i class="fas fa-check-double"></i> 7. klik "teks lakukan ke semua file"</div>
+        <img class="tutorial-img" src="https://ik.imagekit.io/SchwanzML13/Tutorial/Picsart_26-05-02_17-38-21-503.jpg" alt="lakukan ke semua file" loading="lazy">
+        <div class="image-caption">🔄 Terapkan ke semua file saat muncul konfirmasi</div>
+      </div>
+      <!-- STEP 8 -->
+      <div class="step-card">
+        <div class="step-title"><i class="fas fa-exchange-alt"></i> 8. klik teks ganti</div>
+        <img class="tutorial-img" src="https://ik.imagekit.io/SchwanzML13/Tutorial/Picsart_26-05-02_17-38-59-918.jpg" alt="ganti file" loading="lazy">
+        <div class="image-caption">✅ Pilih "Ganti" untuk overwrite script skin lama dengan yang baru</div>
+      </div>
+      <div class="footer-note">
+        <i class="fas fa-lightbulb"></i> Setelah semua langkah selesai, buka game Mobile Legends dan nikmati skin terbaru! Pastikan sudah mengaktifkan izin storage.
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-social">
+      <a href="https://t.me/schwanzml" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+      <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+    </div>
+    <div class="footer-links">
+      <a href="#" class="footer-link">Tentang Kami</a>
+      <a href="#" class="footer-link">Kebijakan Privasi</a>
+      <a href="#" class="footer-link">Syarat & Ketentuan</a>
+      <a href="#" class="footer-link">Bantuan</a>
+    </div>
+    <div class="footer-text">© 2025 Schwans ML • Built with <span class="footer-heart">❤️</span> for Mobile Legends Community</div>
+  </div>
+</footer>
+
+<script>
+  // ========== SCRIPT DENGAN PERBAIKAN TEMA GELAP TERANG & FOOTER ==========
+  const searchInput = document.getElementById('searchInputModern');
+  const searchSlide = document.getElementById('searchSlideCenter');
+  const searchBtn = document.getElementById('searchToggleBtnCenter');
+  const menuBtn = document.getElementById('menuToggleBtn');
+  const drawer = document.getElementById('sideDrawer');
+  const overlay = document.getElementById('menuOverlay');
+  const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+  const themeSwitch = document.getElementById('themeToggleSwitch');
+  const menuAllSkin = document.getElementById('menuAllSkin');
+  const menuHome = document.getElementById('menuHome');
+  const menuTutorial = document.getElementById('menuTutorial');
+  const brandLogo = document.getElementById('brandLogo');
+
+  let searchOpen = false;
+
+  function setActiveMenu() {
+    document.querySelectorAll('.drawer-menu li').forEach(item => item.classList.remove('active-menu'));
+    if (menuTutorial) menuTutorial.classList.add('active-menu');
+  }
+
+  function toggleSearch(force) {
+    searchOpen = force !== undefined ? force : !searchOpen;
+    if (searchOpen) {
+      searchSlide.classList.add('open');
+      setTimeout(() => searchInput?.focus(), 150);
+    } else {
+      searchSlide.classList.remove('open');
+      if (searchInput) searchInput.value = '';
+    }
+  }
+
+  if (searchBtn) {
+    searchBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSearch(); });
+  }
+
+  function openDrawer() { drawer.classList.add('open'); overlay.classList.add('active'); }
+  function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('active'); }
+  if (menuBtn) menuBtn.addEventListener('click', openDrawer);
+  if (overlay) overlay.addEventListener('click', closeDrawer);
+  if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+
+  // ===== FUNGSI TEMA YANG BENAR =====
+  function applyTheme(isDark) {
+    if (isDark) {
+      document.body.classList.add('dark-mode');
+      if (themeSwitch) themeSwitch.checked = true;
+      localStorage.setItem('schwans-theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-mode');
+      if (themeSwitch) themeSwitch.checked = false;
+      localStorage.setItem('schwans-theme', 'light');
+    }
+  }
+
+  function loadAndApplyTheme() {
+    const savedTheme = localStorage.getItem('schwans-theme');
+    if (savedTheme === 'dark') {
+      applyTheme(true);
+    } else {
+      applyTheme(false);
+    }
+  }
+
+  // Event listener untuk toggle switch di drawer
+  if (themeSwitch) {
+    themeSwitch.addEventListener('change', (e) => {
+      applyTheme(e.target.checked);
+    });
+  }
+
+  // Inisialisasi tema saat halaman dimuat
+  loadAndApplyTheme();
+
+  // Navigasi antar halaman
+  function goToHomePage() { window.location.href = 'index.html'; }
+  function goToAllSkin() { window.location.href = 'all-skin.html'; }
+  function stayOnTutorial() { closeDrawer(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+  if (menuHome) menuHome.addEventListener('click', goToHomePage);
+  if (menuAllSkin) menuAllSkin.addEventListener('click', goToAllSkin);
+  if (menuTutorial) menuTutorial.addEventListener('click', stayOnTutorial);
+  if (brandLogo) brandLogo.addEventListener('click', goToHomePage);
+  
+  setActiveMenu();
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => { console.log("search tutorial:", e.target.value); });
+    searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') e.preventDefault(); });
+  }
+
+  // Tutup drawer saat klik item menu (agar UX lebih baik)
+  document.querySelectorAll('.drawer-menu li').forEach(li => {
+    li.addEventListener('click', () => { setTimeout(() => closeDrawer(), 80); });
+  });
+
+  // Fallback image jika gagal load
+  const imgs = document.querySelectorAll('.tutorial-img');
+  imgs.forEach(img => {
+    img.addEventListener('error', function() {
+      this.src = 'https://placehold.co/800x450?text=Gambar+Tutorial+Schwans';
+    });
+  });
+</script>
+</body>
+</html>
