@@ -1,1 +1,74 @@
 
+{
+  "skins": [
+    {
+      "id": 1778483324029,
+      "title": "Aulus Special Revamp",
+      "date": "27 Apr 2026",
+      "image": "https://ik.imagekit.io/SchwanzML13/maxresdefault.jpg?updatedAt=1777476032731",
+      "videoUrl": "https://www.youtube.com/embed/cr7k4YBK_PQ",
+      "replaceItems": [
+        {
+          "name": "Default",
+          "downloadUrl": "https://sfl.gl/z7Nu"
+        },
+        {
+          "name": "Basic",
+          "downloadUrl": "https://sfl.gl/W0nC35"
+        }
+      ]
+    },
+    {
+      "id": 1778483415626,
+      "title": "Akai Luckybox Revamp",
+      "date": "8 Mei 2026",
+      "image": "https://ik.imagekit.io/SchwanzML13/20260507_221604.jpg?updatedAt=1778212857464",
+      "videoUrl": "https://www.youtube.com/embed/ASPT2oQuFwc",
+      "replaceItems": [
+        {
+          "name": "Default",
+          "downloadUrl": "https://sfl.gl/w6LWKW"
+        },
+        {
+          "name": "Elite",
+          "downloadUrl": "https://sfl.gl/mdqP4b"
+        }
+      ]
+    },
+    {
+      "id": 1778483504411,
+      "title": "Balmond Collector Revamp",
+      "date": "9 Mei 2026",
+      "image": "https://ik.imagekit.io/SchwanzML13/20260509_203705.jpg?updatedAt=1778470435009",
+      "videoUrl": "https://www.youtube.com/embed/5aNQqTl5ccc",
+      "replaceItems": [
+        {
+          "name": "Default",
+          "downloadUrl": "https://sfl.gl/BGDnkWe"
+        },
+        {
+          "name": "Basic",
+          "downloadUrl": "https://sfl.gl/CCBEh"
+        }
+      ]
+    },
+    {
+      "id": 1778483577089,
+      "title": "Jawhead Collector Revamp",
+      "date": "10 Mei 2026",
+      "image": "https://ik.imagekit.io/SchwanzML13/20260510_120610.jpg?updatedAt=1778470435224",
+      "videoUrl": "https://www.youtube.com/embed/nOZGHWKd4JA",
+      "replaceItems": [
+        {
+          "name": "Default",
+          "downloadUrl": "https://sfl.gl/ejs9H"
+        },
+        {
+          "name": "Basic",
+          "downloadUrl": "https://sfl.gl/8KyYomc"
+        }
+      ]
+    }
+  ],
+  "lastUpdated": "2026-05-11"
+}
