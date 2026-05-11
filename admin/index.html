@@ -1,1 +1,788 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Schwans ML Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* ========== DARK MODE VARIABLES ========== */
+        :root {
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --container-bg: white;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-color: #ddd;
+            --input-bg: white;
+            --card-bg: #f9f9f9;
+            --card-border: #e0e0e0;
+            --btn-hover-bg: #e0e0e0;
+            --preview-bg: #1e1e1e;
+            --preview-text: #d4d4d4;
+            --warning-bg: #fff3cd;
+            --warning-border: #ffc107;
+            --info-bg: #d1ecf1;
+            --info-border: #17a2b8;
+            --stat-color: #666;
+        }
+        
+        body.dark-mode {
+            --bg-gradient-start: #1a1a2e;
+            --bg-gradient-end: #16213e;
+            --container-bg: #1e1e2e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #333;
+            --input-bg: #2a2a3a;
+            --card-bg: #2a2a3a;
+            --card-border: #3a3a4a;
+            --btn-hover-bg: #3a3a4a;
+            --preview-bg: #0d0d1a;
+            --preview-text: #c0c0d0;
+            --warning-bg: #2a2a1a;
+            --warning-border: #b8860b;
+            --info-bg: #1a2a2a;
+            --info-border: #0a6c6c;
+            --stat-color: #a0a0a0;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        /* Header dengan Dark Mode Toggle */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: 0;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Dark Mode Toggle Switch */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .theme-switch-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        .slider .fa-sun {
+            color: #f39c12;
+            font-size: 12px;
+            z-index: 0;
+        }
+        
+        .slider .fa-moon {
+            color: #f1c40f;
+            font-size: 12px;
+            z-index: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+        
+        /* Button Grid untuk Replace Items */
+        .replace-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .replace-type-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .replace-type-btn:hover {
+            background: var(--btn-hover-bg);
+            transform: translateY(-2px);
+        }
+        
+        .replace-type-btn.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+        
+        /* Replace Items List */
+        .replace-items-list {
+            margin-top: 20px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 20px;
+        }
+        
+        .replace-items-list h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+        
+        .replace-item-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .replace-item-name {
+            min-width: 100px;
+            font-weight: 700;
+            color: var(--text-primary);
+            background: var(--border-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        .replace-item-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+        
+        .btn-remove-item {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        
+        .btn-remove-item:hover {
+            background: #c82333;
+            transform: scale(0.95);
+        }
+        
+        /* Preview JSON */
+        .preview-json {
+            background: var(--preview-bg);
+            color: var(--preview-text);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-right: 10px;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .warning {
+            background: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+        
+        .info {
+            background: var(--info-bg);
+            border-left: 4px solid var(--info-border);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+        
+        .replace-stat {
+            font-size: 14px;
+            color: var(--stat-color);
+            margin-top: 10px;
+        }
+        
+        .empty-items {
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 20px;
+        }
+        
+        hr {
+            border-color: var(--border-color);
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .replace-buttons-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .replace-item-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-remove-item {
+                align-self: flex-end;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>🎮 Admin Panel - Schwans ML</h1>
+                <div class="subtitle">Tambahkan Skin Baru dengan Mudah (Klik Button, Isi Link)</div>
+            </div>
+            <div class="theme-switch-wrapper">
+                <span class="theme-switch-label">
+                    <i class="fas fa-sun"></i> / <i class="fas fa-moon"></i>
+                </span>
+                <label class="theme-switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                    </span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="info">
+            💡 <strong>Cara Pakai:</strong><br>
+            1. Isi judul, tanggal, dan gambar<br>
+            2. <strong>Klik button jenis skin</strong> (Default, Basic, Elite, dll)<br>
+            3. Masukkan link download di kolom yang muncul<br>
+            4. Klik "Export ke JSON" untuk download file
+        </div>
+        
+        <form id="skinForm">
+            <!-- Basic Info -->
+            <div class="form-group">
+                <label>📝 Judul Skin *</label>
+                <input type="text" id="title" required placeholder="Contoh: Akai Luckybox Revamp">
+            </div>
+            
+            <div class="form-group">
+                <label>📅 Tanggal Rilis *</label>
+                <input type="text" id="date" required placeholder="Contoh: 08 Mei 2026">
+            </div>
+            
+            <div class="form-group">
+                <label>🖼️ URL Gambar</label>
+                <input type="url" id="image" placeholder="https://ik.imagekit.io/SchwanzML13/...">
+            </div>
+            
+            <div class="form-group">
+                <label>🎬 URL YouTube (Embed)</label>
+                <input type="url" id="videoUrl" placeholder="https://www.youtube.com/embed/...">
+            </div>
+            
+            <!-- Replace Items dengan Button -->
+            <div class="form-group">
+                <label>🔘 Pilih Jenis Skin (Klik button)</label>
+                <div class="replace-buttons-grid" id="replaceButtonsGrid">
+                    <button type="button" class="replace-type-btn" data-type="Default">Default</button>
+                    <button type="button" class="replace-type-btn" data-type="Basic">Basic</button>
+                    <button type="button" class="replace-type-btn" data-type="Elite">Elite</button>
+                    <button type="button" class="replace-type-btn" data-type="Special">Special</button>
+                    <button type="button" class="replace-type-btn" data-type="Epic">Epic</button>
+                    <button type="button" class="replace-type-btn" data-type="Legend">Legend</button>
+                    <button type="button" class="replace-type-btn" data-type="Collector">Collector</button>
+                    <button type="button" class="replace-type-btn" data-type="Starlight">Starlight</button>
+                    <button type="button" class="replace-type-btn" data-type="Luckybox">Luckybox</button>
+                    <button type="button" class="replace-type-btn" data-type="M-Series">M-Series</button>
+                    <button type="button" class="replace-type-btn" data-type="Zodiac">Zodiac</button>
+                    <button type="button" class="replace-type-btn" data-type="Prime">Prime</button>
+                </div>
+                <div class="replace-stat" id="replaceStat">Belum ada replace items</div>
+            </div>
+            
+            <!-- Daftar Replace Items yang sudah ditambah -->
+            <div class="replace-items-list">
+                <h3>📦 Replace Items yang Ditambahkan:</h3>
+                <div id="itemsContainer"></div>
+            </div>
+            
+            <!-- Preview JSON -->
+            <div class="form-group">
+                <label>👁️ Preview JSON</label>
+                <div class="preview-json" id="jsonPreview">Belum ada data</div>
+            </div>
+            
+            <div class="warning">
+                ⚠️ Data akan disimpan ke LocalStorage sementara.<br>
+                Klik "Export ke JSON" untuk mendownload file, lalu copy ke folder data/
+            </div>
+            
+            <button type="submit" class="btn-success">💾 Simpan ke LocalStorage</button>
+            <button type="button" id="exportBtn" class="btn-success">📥 Export ke JSON</button>
+            <button type="button" id="clearBtn" class="btn-secondary">🗑️ Clear Form</button>
+            <button type="button" id="clearStorageBtn" class="btn-secondary">🧹 Clear LocalStorage</button>
+        </form>
+    </div>
 
+    <script>
+        // ========== DARK MODE ==========
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                if (darkModeToggle) darkModeToggle.checked = true;
+            } else {
+                document.body.classList.remove('dark-mode');
+                if (darkModeToggle) darkModeToggle.checked = false;
+            }
+        }
+        
+        function applyTheme(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('admin_theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('admin_theme', 'light');
+            }
+        }
+        
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('change', (e) => {
+                applyTheme(e.target.checked);
+            });
+        }
+        
+        loadTheme();
+        
+        // ========== DATA REPLACE ITEMS ==========
+        let replaceItems = [];
+        
+        // Kumpulan tombol jenis skin
+        const typeButtons = document.querySelectorAll('.replace-type-btn');
+        const itemsContainer = document.getElementById('itemsContainer');
+        const replaceStat = document.getElementById('replaceStat');
+        const jsonPreview = document.getElementById('jsonPreview');
+        
+        // Fungsi update tampilan replace items
+        function updateReplaceItemsDisplay() {
+            if (replaceItems.length === 0) {
+                itemsContainer.innerHTML = '<div class="empty-items">✨ Belum ada replace items. Klik button di atas untuk menambah.</div>';
+                replaceStat.innerHTML = '📦 Belum ada replace items';
+                return;
+            }
+            
+            let html = '';
+            replaceItems.forEach((item, index) => {
+                html += `
+                    <div class="replace-item-card">
+                        <span class="replace-item-name">${escapeHtml(item.name)}</span>
+                        <input type="text" 
+                               class="replace-item-input" 
+                               placeholder="Masukkan link download..." 
+                               value="${escapeHtml(item.downloadUrl)}"
+                               data-index="${index}"
+                               data-field="downloadUrl">
+                        <button type="button" class="btn-remove-item" data-index="${index}">
+                            <i class="fas fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                `;
+            });
+            
+            itemsContainer.innerHTML = html;
+            replaceStat.innerHTML = `✅ ${replaceItems.length} replace item ditambahkan`;
+            
+            // Event listener untuk input link
+            document.querySelectorAll('.replace-item-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const index = parseInt(input.getAttribute('data-index'));
+                    const value = input.value;
+                    if (replaceItems[index]) {
+                        replaceItems[index].downloadUrl = value;
+                        updateJSONPreview();
+                    }
+                });
+            });
+            
+            // Event listener untuk tombol hapus
+            document.querySelectorAll('.btn-remove-item').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = parseInt(btn.getAttribute('data-index'));
+                    replaceItems.splice(index, 1);
+                    updateReplaceItemsDisplay();
+                    updateJSONPreview();
+                });
+            });
+            
+            updateJSONPreview();
+        }
+        
+        // Fungsi tambah replace item
+        function addReplaceItem(type) {
+            // Cek apakah sudah ada
+            const exists = replaceItems.some(item => item.name === type);
+            if (exists) {
+                alert(`⚠️ Skin type "${type}" sudah ditambahkan!`);
+                return;
+            }
+            
+            replaceItems.push({
+                name: type,
+                downloadUrl: ''
+            });
+            
+            updateReplaceItemsDisplay();
+            
+            // Animasi feedback
+            const btn = document.querySelector(`.replace-type-btn[data-type="${type}"]`);
+            if (btn) {
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 200);
+            }
+        }
+        
+        // Event listener untuk semua button jenis skin
+        typeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.getAttribute('data-type');
+                addReplaceItem(type);
+            });
+        });
+        
+        // Update preview JSON
+        function updateJSONPreview() {
+            const title = document.getElementById('title').value;
+            const date = document.getElementById('date').value;
+            const image = document.getElementById('image').value;
+            const videoUrl = document.getElementById('videoUrl').value;
+            
+            const skinData = {
+                id: Date.now(),
+                title: title || 'Nama Skin',
+                date: date || 'Tanggal belum diisi',
+                image: image || 'https://picsum.photos/id/20/200/110',
+                videoUrl: videoUrl || '',
+                replaceItems: replaceItems.filter(item => item.downloadUrl.trim() !== '')
+            };
+            
+            const fullData = {
+                skins: [skinData],
+                lastUpdated: new Date().toISOString().split('T')[0]
+            };
+            
+            jsonPreview.innerHTML = JSON.stringify(fullData, null, 2);
+        }
+        
+        // Event listener untuk form input
+        document.getElementById('title').addEventListener('input', updateJSONPreview);
+        document.getElementById('date').addEventListener('input', updateJSONPreview);
+        document.getElementById('image').addEventListener('input', updateJSONPreview);
+        document.getElementById('videoUrl').addEventListener('input', updateJSONPreview);
+        
+        // Load existing skins dari localStorage
+        function loadSkins() {
+            const stored = localStorage.getItem('schwans_skins');
+            if (stored) {
+                return JSON.parse(stored);
+            }
+            return [];
+        }
+        
+        // Save skins ke localStorage
+        function saveSkins(skins) {
+            localStorage.setItem('schwans_skins', JSON.stringify(skins));
+        }
+        
+        // Handle form submit
+        const form = document.getElementById('skinForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const date = document.getElementById('date').value;
+            const image = document.getElementById('image').value;
+            const videoUrl = document.getElementById('videoUrl').value;
+            
+            if (!title || !date) {
+                alert('Judul dan Tanggal harus diisi!');
+                return;
+            }
+            
+            const newSkin = {
+                id: Date.now(),
+                title: title,
+                date: date,
+                image: image || 'https://picsum.photos/id/20/200/110',
+                videoUrl: videoUrl || '',
+                replaceItems: replaceItems.filter(item => item.downloadUrl.trim() !== '')
+            };
+            
+            const skins = loadSkins();
+            skins.push(newSkin);
+            saveSkins(skins);
+            
+            alert(`✅ Skin "${title}" berhasil disimpan ke LocalStorage!\n\nTotal skin: ${skins.length}`);
+            
+            // Reset form
+            resetForm();
+        });
+        
+        // Reset form
+        function resetForm() {
+            document.getElementById('title').value = '';
+            document.getElementById('date').value = '';
+            document.getElementById('image').value = '';
+            document.getElementById('videoUrl').value = '';
+            replaceItems = [];
+            updateReplaceItemsDisplay();
+            updateJSONPreview();
+        }
+        
+        // Clear LocalStorage (Fitur Baru)
+        document.getElementById('clearStorageBtn').addEventListener('click', () => {
+            if (confirm('⚠️ Yakin ingin menghapus SEMUA data di LocalStorage?\n\nData skin yang tersimpan akan hilang permanen!')) {
+                localStorage.clear();
+                alert('✅ LocalStorage sudah dikosongkan!\n\nRefresh halaman untuk melihat perubahan.');
+                resetForm();
+                // Refresh tampilan
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
+        });
+        
+        // Export ke JSON (download file)
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const title = document.getElementById('title').value;
+            const date = document.getElementById('date').value;
+            const image = document.getElementById('image').value;
+            const videoUrl = document.getElementById('videoUrl').value;
+            
+            // Load existing skins dari localStorage untuk di-export semua
+            const existingSkins = loadSkins();
+            
+            // Jika ada skin baru di form, tambahkan
+            if (title) {
+                const newSkin = {
+                    id: Date.now(),
+                    title: title,
+                    date: date || new Date().toLocaleDateString('id-ID'),
+                    image: image || 'https://picsum.photos/id/20/200/110',
+                    videoUrl: videoUrl || '',
+                    replaceItems: replaceItems.filter(item => item.downloadUrl.trim() !== '')
+                };
+                existingSkins.push(newSkin);
+            }
+            
+            if (existingSkins.length === 0) {
+                alert('Tidak ada data untuk di-export!');
+                return;
+            }
+            
+            const exportData = {
+                skins: existingSkins,
+                lastUpdated: new Date().toISOString().split('T')[0]
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'skins.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert(`✅ File skins.json berhasil didownload!\n📁 Copy ke folder data/ project Anda\n📊 Total skin: ${existingSkins.length}`);
+        });
+        
+        // Clear form
+        document.getElementById('clearBtn').addEventListener('click', resetForm);
+        
+        // Escape HTML
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        // Inisialisasi
+        updateReplaceItemsDisplay();
+        updateJSONPreview();
+        
+        console.log('✨ Admin panel siap digunakan! Dark mode bisa di-toggle di pojok kanan atas.');
+    </script>
+</body>
+              </html>
