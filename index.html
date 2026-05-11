@@ -996,7 +996,7 @@
     window.location.href = `detail-skin.html?title=${encodeURIComponent(title)}&date=${encodeURIComponent(date)}&video=${encodeURIComponent(videoUrl)}&id=${id}&replace=${replaceParam}`;
   }
 
-  // Fungsi render kartu dari array data
+  // Fungsi render kartu dari array data (MEMPERBAIKI akses replaceItems)
   function renderCardFromArray(dataArray) {
     if (!cardContainer) return;
     
@@ -1009,11 +1009,17 @@
     
     const html = dataArray.map((card, idx) => {
       const imgSrc = card.image && card.image.trim() !== '' ? card.image : 'https://picsum.photos/id/20/200/110';
-      const originalSkin = listSkin[card.originalIndex !== undefined ? card.originalIndex : card.id];
-      const replaceItems = originalSkin && originalSkin.replaceItems ? JSON.stringify(originalSkin.replaceItems) : '[]';
+      // Ambil replaceItems dari data asli (listSkin) jika ada
+      let replaceItems = [];
+      if (typeof listSkin !== 'undefined' && listSkin[card.originalIndex]) {
+        replaceItems = listSkin[card.originalIndex].replaceItems || [];
+      } else if (card.replaceItems) {
+        replaceItems = card.replaceItems;
+      }
+      const replaceItemsStr = JSON.stringify(replaceItems);
       
       return `
-        <div class="mini-card" data-id="${card.id}" data-title="${escapeHtml(card.title)}" data-date="${card.date}" data-video="${card.videoUrl || ''}" data-replace='${replaceItems}'>
+        <div class="mini-card" data-id="${card.id}" data-title="${escapeHtml(card.title)}" data-date="${escapeHtml(card.date)}" data-video="${escapeHtml(card.videoUrl || '')}" data-replace='${replaceItemsStr}'>
           <img class="mini-card-image" src="${imgSrc}" alt="${escapeHtml(card.title)}" loading="lazy" onerror="this.src='https://picsum.photos/id/20/200/110'">
           <div class="mini-card-content">
             <div class="mini-card-date">
@@ -1059,12 +1065,12 @@
     });
   }
 
-  // Fungsi render kartu mode normal (tanpa pagination, hanya 4-6 item)
+  // Fungsi render kartu mode normal (tanpa pagination, hanya 6 item)
   function renderCards() {
     if (!cardContainer) return;
     
+    // Jangan render jika mode view all aktif
     if (isViewAllMode) {
-      applyPagination();
       return;
     }
     
@@ -1156,13 +1162,8 @@
   }
 
   function applyPagination() {
-    const filteredData = getFilteredData();
-    totalPages = Math.ceil(filteredData.length / itemsPerPage);
-    if (totalPages === 0) totalPages = 1;
-    
-    if (currentPage > totalPages) currentPage = totalPages;
-    if (currentPage < 1) currentPage = 1;
-    
+    if (!isViewAllMode) return;
+    currentPage = 1;
     updatePagination();
   }
 
@@ -1230,10 +1231,14 @@
       Jan: 0, Feb: 1, Mar: 2, Apr: 3, Mei: 4, May: 4, Jun: 5,
       Jul: 6, Agu: 7, Aug: 7, Sep: 8, Okt: 9, Oct: 9, Nov: 10, Des: 11, Dec: 11
     };
+    if (!dateStr) return new Date(0);
     const parts = dateStr.split(" ");
     if (parts.length === 3) {
       const [day, monthStr, year] = parts;
-      return new Date(year, months[monthStr], parseInt(day));
+      const month = months[monthStr];
+      if (month !== undefined) {
+        return new Date(year, month, parseInt(day));
+      }
     }
     return new Date(0);
   }
@@ -1248,12 +1253,19 @@
         title: item.title || `Skin ${idx+1}`,
         date: item.date || "2025",
         image: item.image || `https://picsum.photos/id/${40 + (idx % 50)}/200/110`,
-        videoUrl: item.videoUrl || ''
+        videoUrl: item.videoUrl || '',
+        replaceItems: item.replaceItems || []
       }));
       // Sortir berdasarkan tanggal terbaru
       skinData.sort((a, b) => parseDate(b.date) - parseDate(a.date));
-      console.log('Data setelah sorting:', skinData);
-      renderCards();
+      console.log('Data setelah sorting:', skinData.length, 'item');
+      
+      // Render berdasarkan mode saat ini
+      if (isViewAllMode) {
+        applyPagination();
+      } else {
+        renderCards();
+      }
     } else {
       console.warn("listSkin tidak ditemukan. Pastikan list-skin.js sudah dimuat dan mendefinisikan variabel 'listSkin'");
       cardContainer.innerHTML = `<div class="empty-message">
@@ -1262,7 +1274,7 @@
     }
   }
 
-  // Fungsi show all cards dengan pagination
+  // Fungsi show all cards dengan pagination (DIPERBAIKI)
   function showAllCards() {
     if (searchInput) searchInput.value = '';
     if (searchBottomInput) searchBottomInput.value = '';
@@ -1274,7 +1286,22 @@
     isViewAllMode = true;
     toggleViewBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Kembali';
     paginationSection.style.display = 'block';
-    applyPagination();
+    
+    // Render ulang data
+    if (skinData.length > 0) {
+      applyPagination();
+    } else {
+      // Tunggu data load dulu
+      setTimeout(() => {
+        if (skinData.length > 0) {
+          applyPagination();
+        } else {
+          cardContainer.innerHTML = `<div class="empty-message">
+            <i class="fas fa-spinner fa-pulse"></i> Memuat data...
+          </div>`;
+        }
+      }, 100);
+    }
   }
 
   function exitAllCardsMode() {
@@ -1287,18 +1314,6 @@
     renderCards();
   }
 
-  function goToHomePage() {
-    window.location.href = 'index.html';
-  }
-
-  function goToTutorialPage() {
-    window.location.href = 'tutorial.html';
-  }
-
-  function goToSupportPage() {
-    window.location.href = 'support.html';
-  }
-
   function onToggleButtonClick() {
     if (!isViewAllMode) {
       showAllCards();
@@ -1307,17 +1322,13 @@
     }
   }
 
-  function goToAllSkin() {
-    window.location.href = 'all-skin.html';
-  }
-
   // Event listener untuk search input (header)
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       currentFilter = e.target.value;
       if (isViewAllMode) {
         currentPage = 1;
-        applyPagination();
+        updatePagination();
       } else {
         renderCards();
       }
@@ -1328,8 +1339,11 @@
     toggleViewBtn.addEventListener('click', onToggleButtonClick);
   }
 
+  // Menu navigasi
   if (menuAllSkin) {
-    menuAllSkin.addEventListener('click', goToAllSkin);
+    menuAllSkin.addEventListener('click', () => {
+      window.location.href = 'all-skin.html';
+    });
   }
 
   if (menuHome) {
@@ -1339,15 +1353,21 @@
   }
 
   if (menuTutorial) {
-    menuTutorial.addEventListener('click', goToTutorialPage);
+    menuTutorial.addEventListener('click', () => {
+      window.location.href = 'tutorial.html';
+    });
   }
 
   if (menuSupportAdmin) {
-    menuSupportAdmin.addEventListener('click', goToSupportPage);
+    menuSupportAdmin.addEventListener('click', () => {
+      window.location.href = 'support.html';
+    });
   }
 
   if (brandLogo) {
-    brandLogo.addEventListener('click', goToHomePage);
+    brandLogo.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
   }
 
   // Set active menu highlight untuk Beranda saat halaman dimuat
@@ -1362,11 +1382,5 @@
 
 <!-- Memuat list-skin.js (file eksternal yang berisi variabel listSkin) -->
 <script src="list-skin.js"></script>
-<script>
-    // Tambahkan ini untuk memastikan data termuat
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Index page loaded, waiting for database...');
-    });
-</script>
 </body>
 </html>
